@@ -3,5 +3,14 @@ resource "azuread_service_principal_claims_mapping_policy_assignment" "service_p
 
   claims_mapping_policy_id = each.value.claims_mapping_policy_id
   service_principal_id     = each.value.service_principal_id
+
+  dynamic "timeouts" {
+    for_each = each.value.timeouts != null ? [each.value.timeouts] : []
+    content {
+      create = timeouts.value.create
+      delete = timeouts.value.delete
+      read   = timeouts.value.read
+    }
+  }
 }
 
